@@ -1,0 +1,66 @@
+backend:
+  name: github
+  repo: yuankunzhou/yuankun-zhou
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "plays"
+    label: "Plays"
+    folder: "_plays"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Type", name: "type", widget: "string", hint: "e.g. Full-length, Short play, Monologue series" }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+
+  - name: "screenwriting"
+    label: "Screenwriting"
+    folder: "_screenwriting"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Type", name: "type", widget: "string", hint: "e.g. Short film, Feature, Series" }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "_projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "string", hint: "e.g. Zine, Memoir, Installation" }
+      - { label: "Description", name: "description", widget: "text" }
+
+  - name: "cv"
+    label: "CV"
+    folder: "_cv"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Institution / Place", name: "place", widget: "string" }
+      - label: "Section"
+        name: "section"
+        widget: "select"
+        options:
+          - { label: "Education", value: "education" }
+          - { label: "Selected Work & Residencies", value: "work" }
+          - { label: "Publications & Talks", value: "publications" }
+
+  - name: "settings"
+    label: "About & Settings"
+    files:
+      - label: "About"
+        name: "about"
+        file: "_data/about.md"
+        fields:
+          - { label: "About Text", name: "body", widget: "markdown" }
