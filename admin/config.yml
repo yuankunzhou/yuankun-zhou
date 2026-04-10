@@ -2,6 +2,7 @@ backend:
   name: github
   repo: yuankunzhou/yuankun-zhou
   branch: main
+  site_domain: yuankunzhou.github.io/yuankun-zhou
 
 media_folder: "images"
 public_folder: "/images"
