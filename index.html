@@ -17,12 +17,7 @@
     margin: 0 auto;
     padding: 80px 24px 120px;
   }
-  .header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 32px;
-  }
+  .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; }
   .header-left { flex: 1; }
   h1 { font-size: 23px; font-weight: normal; color: #111; margin: 0 0 4px; }
   .zh { font-size: 18px; color: #999; }
@@ -75,7 +70,7 @@
   <div class="header-left">
     <h1>Yuankun Zhou <span class="zh">周元坤</span></h1>
     <p class="roles">Artist · Dramaturg · Playwright · Researcher</p>
-    <div class="about-text">[About description — placeholder text to be filled in via admin.]</div>
+    <div class="about-text">[About description]</div>
   </div>
   <img class="profile-pic" id="profile-img" src="" alt="Yuankun Zhou" />
 </div>
@@ -88,28 +83,13 @@
   <button onclick="showTab('contact',this)">Contact</button>
 </nav>
 
-<!-- SCRIPTS -->
 <div class="panel active" id="tab-scripts">
   <div class="label">Theatre Plays</div>
-  <div class="entry">
-    <div class="entry-meta">Full-length · 2024</div>
-    <div class="entry-title">Placeholder Play Title</div>
-    <div class="entry-desc">Description of the play.</div>
-  </div>
-  <div class="entry">
-    <div class="entry-meta">Short play · 2023</div>
-    <div class="entry-title">Placeholder Play Title</div>
-    <div class="entry-desc">Description of the play.</div>
-  </div>
-  <div class="label">Screenwriting</div>
-  <div class="entry">
-    <div class="entry-meta">Short film · 2024</div>
-    <div class="entry-title">Placeholder Script Title</div>
-    <div class="entry-desc">Description of the script.</div>
-  </div>
+  <div id="plays-list"></div>
+  <div class="label" style="margin-top:37px;">Screenwriting</div>
+  <div id="screenwriting-list"></div>
 </div>
 
-<!-- PROJECTS -->
 <div class="panel" id="tab-projects">
   <div class="proj-nav" id="proj-nav">
     <button class="active" onclick="showProj('zine',this)">Zine</button>
@@ -118,148 +98,221 @@
     <button onclick="showProj('typewriting',this)">Typewriting</button>
     <button onclick="showProj('wall',this)">Wall / 墙</button>
   </div>
-  <div class="proj-panel active" id="proj-zine">
-    <div class="proj-entry">
-      <div class="proj-year">2024</div>
-      <div class="proj-title">Placeholder Zine Title One</div>
-      <div class="proj-images">
-        <div class="proj-image"></div>
-        <div class="proj-image"></div>
-      </div>
-      <div class="proj-desc">Description of this zine.</div>
-      <a href="#" class="download-link">Download PDF ↓</a>
-    </div>
-    <div class="proj-entry">
-      <div class="proj-year">2023</div>
-      <div class="proj-title">Placeholder Zine Title Two</div>
-      <div class="proj-images">
-        <div class="proj-image"></div>
-        <div class="proj-image"></div>
-      </div>
-      <div class="proj-desc">Description of this zine.</div>
-      <a href="#" class="download-link">Download PDF ↓</a>
-    </div>
-  </div>
-  <div class="proj-panel" id="proj-memoir">
-    <div class="proj-big-desc">[Description of the memoir. Placeholder text to be filled in.]</div>
-  </div>
+  <div class="proj-panel active" id="proj-zine"><div id="zines-list"></div></div>
+  <div class="proj-panel" id="proj-memoir"><div id="memoir-text" class="proj-big-desc"></div></div>
   <div class="proj-panel" id="proj-hatbox">
-    <div class="proj-big-desc">[Description of Sondheim's <em>Hat Box</em>. Placeholder text to be filled in.]</div>
-    <a href="#" class="download-link">Download PDF ↓</a>
+    <div id="hatbox-text" class="proj-big-desc"></div>
+    <a id="hatbox-pdf" href="#" class="download-link" style="display:none;">Download PDF ↓</a>
   </div>
   <div class="proj-panel" id="proj-typewriting">
-    <div class="proj-big-desc">[Description of the Typewriting project. Placeholder text to be filled in.]</div>
-    <div class="proj-entry">
-      <div class="proj-year">2024</div>
-      <div class="proj-title">Placeholder Entry Title</div>
-      <div class="proj-image-single"></div>
-      <div class="proj-desc">Description of this entry.</div>
-    </div>
-    <div class="proj-entry">
-      <div class="proj-year">2023</div>
-      <div class="proj-title">Placeholder Entry Title</div>
-      <div class="proj-image-single"></div>
-      <div class="proj-desc">Description of this entry.</div>
-    </div>
+    <div id="typewriting-text" class="proj-big-desc"></div>
+    <div id="typewriting-list"></div>
   </div>
   <div class="proj-panel" id="proj-wall">
-    <div class="proj-big-desc">[Description of Wall / 墙. Placeholder text to be filled in.]</div>
-    <div class="proj-entry">
-      <div class="wall-meta">Rotterdam · 2024</div>
-      <div class="proj-image-single"></div>
-      <div class="proj-desc">Description of this wall entry.</div>
-    </div>
-    <div class="proj-entry">
-      <div class="wall-meta">Amsterdam · 2023</div>
-      <div class="proj-image-single"></div>
-      <div class="proj-desc">Description of this wall entry.</div>
-    </div>
+    <div id="wall-text" class="proj-big-desc"></div>
+    <div id="wall-list"></div>
   </div>
 </div>
 
-<!-- BLOG -->
 <div class="panel" id="tab-blog">
-  <div class="label">2025</div>
-  <div class="blog-entry">
-    <div class="blog-header">
-      <div class="blog-title">Placeholder Post Title</div>
-      <div class="blog-date">12 Mar</div>
-    </div>
-    <div class="blog-content">Content of the post.</div>
-  </div>
-  <div class="label">2024</div>
-  <div class="blog-entry">
-    <div class="blog-header">
-      <div class="blog-title">Placeholder Post Title</div>
-      <div class="blog-date">8 Nov</div>
-    </div>
-    <div class="blog-content">Content of the post.</div>
-  </div>
+  <div id="blog-list"></div>
 </div>
 
-<!-- CV -->
 <div class="panel" id="tab-cv">
   <iframe class="cv-preview" id="cv-frame" src="" title="CV"></iframe>
-  <a href="#" class="download-link" id="cv-download">Download CV (PDF) ↓</a>
+  <a href="#" class="download-link" id="cv-download" style="display:none;">Download CV (PDF) ↓</a>
 </div>
 
-<!-- CONTACT -->
 <div class="panel" id="tab-contact">
   <div class="contact-block">
     <div class="contact-label">Email</div>
-    <a href="mailto:placeholder@email.com" class="contact-link">placeholder@email.com</a>
+    <a id="contact-email" href="#" class="contact-link"></a>
   </div>
   <div class="contact-block">
     <div class="contact-label">Address</div>
-    <div class="contact-value">Rotterdam, Netherlands</div>
+    <div id="contact-address" class="contact-value"></div>
   </div>
   <div class="contact-block">
     <div class="contact-label">Instagram</div>
-    <a href="#" class="contact-link">@placeholder</a>
+    <a id="contact-instagram" href="#" class="contact-link"></a>
   </div>
 </div>
 
 <script>
-  async function loadAbout() {
+  function parseMd(text) {
+    const lines = text.split('\n');
+    const data = {};
+    let dashes = 0;
+    let bodyStart = 0;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].trim() === '---') {
+        dashes++;
+        if (dashes === 2) { bodyStart = i + 1; break; }
+        continue;
+      }
+      if (dashes === 1) {
+        const m = lines[i].match(/^([\w_]+):\s*"?(.+?)"?\s*$/);
+        if (m) data[m[1]] = m[2];
+      }
+    }
+    data._body = lines.slice(bodyStart).join('\n').trim();
+    return data;
+  }
+
+  async function fetchMd(path) {
     try {
-      const res = await fetch('/_data/about.md');
-      const text = await res.text();
-      const lines = text.split('\n');
-      let inFrontmatter = false;
-      let frontmatterDone = false;
-      let dashes = 0;
-      const data = {};
-      let bodyLines = [];
+      const res = await fetch(path);
+      if (!res.ok) return null;
+      return parseMd(await res.text());
+    } catch { return null; }
+  }
 
-      for (const line of lines) {
-        if (line.trim() === '---') {
-          dashes++;
-          if (dashes === 1) { inFrontmatter = true; continue; }
-          if (dashes === 2) { inFrontmatter = false; frontmatterDone = true; continue; }
+  async function fetchDir(folder) {
+    try {
+      const res = await fetch(`https://api.github.com/repos/yuankunzhou/yuankun-zhou/contents/${folder}`);
+      if (!res.ok) return [];
+      const files = await res.json();
+      const results = [];
+      for (const f of files) {
+        if (f.name.endsWith('.md')) {
+          const r = await fetch(f.download_url);
+          if (r.ok) results.push(parseMd(await r.text()));
         }
-        if (inFrontmatter) {
-          const match = line.match(/^(\w+):\s*"?(.+?)"?\s*$/);
-          if (match) data[match[1]] = match[2];
-        }
-        if (frontmatterDone) bodyLines.push(line);
       }
+      return results;
+    } catch { return []; }
+  }
 
-      if (data.name_en) document.querySelector('h1').childNodes[0].textContent = data.name_en + ' ';
-      if (data.name_zh) document.querySelector('.zh').textContent = data.name_zh;
-      if (data.roles) document.querySelector('.roles').textContent = data.roles;
-      if (data.profile_pic) {
-        const img = document.getElementById('profile-img');
-        img.src = data.profile_pic;
-        img.style.display = 'block';
-      }
-      const body = bodyLines.join('\n').trim();
-      if (body) document.querySelector('.about-text').textContent = body;
-    } catch(e) {
-      console.log('Could not load about data', e);
+  async function loadAbout() {
+    const d = await fetchMd('/_data/about.md');
+    if (!d) return;
+    if (d.name_en) document.querySelector('h1').childNodes[0].textContent = d.name_en + ' ';
+    if (d.name_zh) document.querySelector('.zh').textContent = d.name_zh;
+    if (d.roles) document.querySelector('.roles').textContent = d.roles;
+    if (d.profile_pic) document.getElementById('profile-img').src = d.profile_pic;
+    if (d._body) document.querySelector('.about-text').textContent = d._body;
+  }
+
+  async function loadScripts() {
+    const plays = await fetchDir('_plays');
+    plays.sort((a,b) => (b.year||'').localeCompare(a.year||''));
+    document.getElementById('plays-list').innerHTML = plays.map(p => `
+      <div class="entry">
+        <div class="entry-meta">${p.type||''}${p.type&&p.year?' · ':''}${p.year||''}</div>
+        <div class="entry-title">${p.title||''}</div>
+        ${p.keywords?`<div class="entry-meta">${p.keywords}</div>`:''}
+        <div class="entry-desc">${p.description||''}</div>
+      </div>`).join('');
+
+    const scripts = await fetchDir('_screenwriting');
+    scripts.sort((a,b) => (b.year||'').localeCompare(a.year||''));
+    document.getElementById('screenwriting-list').innerHTML = scripts.map(p => `
+      <div class="entry">
+        <div class="entry-meta">${p.type||''}${p.type&&p.year?' · ':''}${p.year||''}</div>
+        <div class="entry-title">${p.title||''}</div>
+        ${p.keywords?`<div class="entry-meta">${p.keywords}</div>`:''}
+        <div class="entry-desc">${p.description||''}</div>
+      </div>`).join('');
+  }
+
+  async function loadZines() {
+    const zines = await fetchDir('_zines');
+    zines.sort((a,b) => (b.year||'').localeCompare(a.year||''));
+    document.getElementById('zines-list').innerHTML = zines.map(z => `
+      <div class="proj-entry">
+        <div class="proj-year">${z.year||''}</div>
+        <div class="proj-title">${z.title||''}</div>
+        <div class="proj-images">
+          ${z.image1?`<img class="proj-image" src="${z.image1}" alt="" />`:'<div class="proj-image"></div>'}
+          ${z.image2?`<img class="proj-image" src="${z.image2}" alt="" />`:'<div class="proj-image"></div>'}
+        </div>
+        <div class="proj-desc">${z.description||''}</div>
+        ${z.pdf?`<a href="${z.pdf}" class="download-link">Download PDF ↓</a>`:''}
+      </div>`).join('');
+  }
+
+  async function loadStaticProjects() {
+    const memoir = await fetchMd('/_data/memoir.md');
+    if (memoir&&memoir._body) document.getElementById('memoir-text').textContent = memoir._body;
+
+    const hatbox = await fetchMd('/_data/hatbox.md');
+    if (hatbox) {
+      if (hatbox._body) document.getElementById('hatbox-text').textContent = hatbox._body;
+      if (hatbox.pdf) { const el = document.getElementById('hatbox-pdf'); el.href = hatbox.pdf; el.style.display = 'inline'; }
+    }
+
+    const typewriting = await fetchMd('/_data/typewriting.md');
+    if (typewriting&&typewriting._body) document.getElementById('typewriting-text').textContent = typewriting._body;
+
+    const wall = await fetchMd('/_data/wall.md');
+    if (wall&&wall._body) document.getElementById('wall-text').textContent = wall._body;
+  }
+
+  async function loadTypewriting() {
+    const entries = await fetchDir('_typewriting');
+    entries.sort((a,b) => (b.year||'').localeCompare(a.year||''));
+    document.getElementById('typewriting-list').innerHTML = entries.map(e => `
+      <div class="proj-entry">
+        <div class="proj-year">${e.year||''}</div>
+        <div class="proj-title">${e.title||''}</div>
+        ${e.image?`<img class="proj-image-single" src="${e.image}" alt="" />`:'<div class="proj-image-single"></div>'}
+        <div class="proj-desc">${e.description||''}</div>
+      </div>`).join('');
+  }
+
+  async function loadWall() {
+    const entries = await fetchDir('_wall');
+    entries.sort((a,b) => (b.year||'').localeCompare(a.year||''));
+    document.getElementById('wall-list').innerHTML = entries.map(e => `
+      <div class="proj-entry">
+        <div class="wall-meta">${e.location||''}${e.location&&e.year?' · ':''}${e.year||''}</div>
+        ${e.image?`<img class="proj-image-single" src="${e.image}" alt="" />`:'<div class="proj-image-single"></div>'}
+        <div class="proj-desc">${e.description||''}</div>
+      </div>`).join('');
+  }
+
+  async function loadBlog() {
+    const posts = await fetchDir('_blog');
+    posts.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+    const byYear = {};
+    for (const p of posts) {
+      const year = (p.date||'').split(' ').pop() || 'Unknown';
+      if (!byYear[year]) byYear[year] = [];
+      byYear[year].push(p);
+    }
+    const years = Object.keys(byYear).sort((a,b) => b-a);
+    document.getElementById('blog-list').innerHTML = years.map(year => `
+      <div class="label">${year}</div>
+      ${byYear[year].map(p => `
+        <div class="blog-entry">
+          <div class="blog-header">
+            <div class="blog-title">${p.title||''}</div>
+            <div class="blog-date">${(p.date||'').split(' ').slice(0,2).join(' ')}</div>
+          </div>
+          <div class="blog-content">${p._body||''}</div>
+        </div>`).join('')}`).join('');
+  }
+
+  async function loadCV() {
+    const d = await fetchMd('/_data/cv.md');
+    if (d&&d.cv_pdf) {
+      document.getElementById('cv-frame').src = d.cv_pdf;
+      const dl = document.getElementById('cv-download');
+      dl.href = d.cv_pdf;
+      dl.style.display = 'inline';
     }
   }
 
-  loadAbout();
+  async function loadContact() {
+    const d = await fetchMd('/_data/contact.md');
+    if (!d) return;
+    if (d.email) { const el = document.getElementById('contact-email'); el.href = 'mailto:'+d.email; el.textContent = d.email; }
+    if (d.address) document.getElementById('contact-address').textContent = d.address;
+    if (d.instagram) { const el = document.getElementById('contact-instagram'); el.href = 'https://instagram.com/'+d.instagram.replace('@',''); el.textContent = d.instagram.startsWith('@')?d.instagram:'@'+d.instagram; }
+  }
+
+  loadAbout(); loadScripts(); loadZines(); loadStaticProjects();
+  loadTypewriting(); loadWall(); loadBlog(); loadCV(); loadContact();
 
   function showTab(name, btn) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -276,9 +329,7 @@
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", user => {
       if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
+        window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
       }
     });
   }
