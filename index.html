@@ -220,6 +220,47 @@
 </div>
 
 <script>
+  async function loadAbout() {
+    try {
+      const res = await fetch('/_data/about.md');
+      const text = await res.text();
+      const lines = text.split('\n');
+      let inFrontmatter = false;
+      let frontmatterDone = false;
+      let dashes = 0;
+      const data = {};
+      let bodyLines = [];
+
+      for (const line of lines) {
+        if (line.trim() === '---') {
+          dashes++;
+          if (dashes === 1) { inFrontmatter = true; continue; }
+          if (dashes === 2) { inFrontmatter = false; frontmatterDone = true; continue; }
+        }
+        if (inFrontmatter) {
+          const match = line.match(/^(\w+):\s*"?(.+?)"?\s*$/);
+          if (match) data[match[1]] = match[2];
+        }
+        if (frontmatterDone) bodyLines.push(line);
+      }
+
+      if (data.name_en) document.querySelector('h1').childNodes[0].textContent = data.name_en + ' ';
+      if (data.name_zh) document.querySelector('.zh').textContent = data.name_zh;
+      if (data.roles) document.querySelector('.roles').textContent = data.roles;
+      if (data.profile_pic) {
+        const img = document.getElementById('profile-img');
+        img.src = data.profile_pic;
+        img.style.display = 'block';
+      }
+      const body = bodyLines.join('\n').trim();
+      if (body) document.querySelector('.about-text').textContent = body;
+    } catch(e) {
+      console.log('Could not load about data', e);
+    }
+  }
+
+  loadAbout();
+
   function showTab(name, btn) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
