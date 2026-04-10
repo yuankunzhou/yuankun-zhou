@@ -9,213 +9,214 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: Georgia, serif;
-    font-size: 15px;
-    line-height: 1.7;
+    font-size: 20px;
+    line-height: 1.8;
     color: #111;
     background: #fff;
-    max-width: 620px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 80px 24px 120px;
   }
-  h1 {
-    font-size: 18px;
-    font-weight: normal;
-    margin-bottom: 4px;
-  }
-  .zh {
-    font-size: 13px;
-    color: #999;
-  }
-  .roles {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    color: #999;
-    margin-top: 6px;
-    margin-bottom: 48px;
-  }
-  .about {
-    margin-bottom: 48px;
-    color: #222;
-  }
-  nav {
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 36px;
+  .header {
     display: flex;
-    gap: 24px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
   }
-  nav button {
-    background: none;
-    border: none;
-    border-bottom: 1px solid transparent;
-    margin-bottom: -1px;
-    padding: 6px 0;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    color: #999;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-  }
+  .header-left { flex: 1; }
+  h1 { font-size: 23px; font-weight: normal; color: #111; margin: 0 0 4px; }
+  .zh { font-size: 18px; color: #999; }
+  .roles { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; margin-top: 11px; margin-bottom: 21px; }
+  .about-text { font-size: 19px; color: #444; line-height: 1.8; max-width: 480px; }
+  .profile-pic { width: 112px; height: 144px; object-fit: cover; flex-shrink: 0; margin-left: 32px; background: #eee; display: block; }
+  nav { border-bottom: 1px solid #ddd; margin-bottom: 36px; display: flex; gap: 24px; }
+  nav button { background: none; border: none; border-bottom: 1px solid transparent; margin-bottom: -1px; padding: 8px 0; font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; cursor: pointer; }
   nav button:hover { color: #111; }
-  nav button.active {
-    color: #111;
-    border-bottom-color: #111;
-  }
+  nav button.active { color: #111; border-bottom-color: #111; }
   .panel { display: none; }
   .panel.active { display: block; }
-  .label {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #bbb;
-    margin-top: 32px;
-    margin-bottom: 16px;
-  }
+  .label { font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; margin-top: 37px; margin-bottom: 21px; }
   .label:first-child { margin-top: 0; }
-  .entry { margin-bottom: 24px; }
-  .entry-title { font-style: italic; }
-  .entry-meta {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 3px;
-  }
-  .entry-desc { color: #444; font-size: 14px; }
-  .cv-row {
-    display: grid;
-    grid-template-columns: 72px 1fr;
-    gap: 12px;
-    padding: 5px 0;
-    border-bottom: 1px solid #f2f2f2;
-    font-size: 14px;
-  }
-  .cv-year {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    color: #bbb;
-    padding-top: 1px;
-  }
-  .cv-place {
-    font-style: italic;
-    color: #999;
-    font-size: 13px;
-  }
-  .cv-block { margin-bottom: 32px; }
+  .entry { margin-bottom: 29px; }
+  .entry-meta { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; margin-bottom: 8px; }
+  .entry-title { font-style: italic; font-size: 20px; color: #111; margin-bottom: 8px; }
+  .entry-desc { font-size: 19px; color: #444; line-height: 1.8; }
+  .proj-nav { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; border-bottom: 1px solid #f0f0f0; padding-bottom: 16px; }
+  .proj-nav button { background: none; border: none; font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; cursor: pointer; padding: 0; }
+  .proj-nav button.active { color: #111; border-bottom: 1px solid #111; padding-bottom: 2px; }
+  .proj-panel { display: none; }
+  .proj-panel.active { display: block; }
+  .proj-entry { margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid #f0f0f0; }
+  .proj-entry:last-child { border-bottom: none; }
+  .proj-year { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; margin-bottom: 8px; }
+  .proj-title { font-style: italic; font-size: 20px; color: #111; margin-bottom: 12px; }
+  .proj-images { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .proj-image { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: #f0f0f0; display: block; }
+  .proj-image-single { width: 100%; max-height: 400px; object-fit: cover; background: #f0f0f0; display: block; margin-bottom: 12px; }
+  .proj-desc { font-size: 19px; color: #444; line-height: 1.8; margin-bottom: 16px; }
+  .proj-big-desc { font-size: 19px; color: #444; line-height: 1.8; margin-bottom: 37px; }
+  .download-link { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #111; text-decoration: none; border-bottom: 1px solid #111; padding-bottom: 1px; }
+  .wall-meta { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; margin-bottom: 8px; }
+  .blog-entry { margin-bottom: 29px; padding-bottom: 29px; border-bottom: 1px solid #f0f0f0; }
+  .blog-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .blog-title { font-style: italic; font-size: 20px; color: #111; }
+  .blog-date { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; white-space: nowrap; margin-left: 16px; }
+  .blog-content { font-size: 19px; color: #444; line-height: 1.8; }
+  .cv-preview { width: 100%; height: 500px; border: none; background: #f8f8f8; display: block; margin-bottom: 21px; }
+  .contact-block { margin-bottom: 29px; }
+  .contact-label { font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; margin-bottom: 11px; }
+  .contact-value { font-size: 19px; color: #444; line-height: 1.8; }
+  .contact-link { font-size: 19px; color: #111; text-decoration: none; border-bottom: 1px solid #111; padding-bottom: 1px; }
 </style>
 </head>
 <body>
 
-<h1>Yuankun Zhou <span class="zh">周元坤</span></h1>
-<p class="roles">Artist · Dramaturg · Playwright · Researcher</p>
-
-<div class="about" id="about-text">
-  <p>Yuankun Zhou is an artist, dramaturg, playwright, and researcher based in Rotterdam. Their practice moves between language, stage, and material form.</p>
-  <p>They are interested in collaborative authorship, archival instinct, and the politics of who gets to tell a story.</p>
+<div class="header">
+  <div class="header-left">
+    <h1>Yuankun Zhou <span class="zh">周元坤</span></h1>
+    <p class="roles">Artist · Dramaturg · Playwright · Researcher</p>
+    <div class="about-text">[About description — placeholder text to be filled in via admin.]</div>
+  </div>
+  <img class="profile-pic" id="profile-img" src="" alt="Yuankun Zhou" />
 </div>
 
 <nav>
-  <button class="active" onclick="showTab('writing', this)">Dramatic Writing / Scripts</button>
-  <button onclick="showTab('projects', this)">Projects</button>
-  <button onclick="showTab('cv', this)">CV</button>
+  <button class="active" onclick="showTab('scripts',this)">Scripts</button>
+  <button onclick="showTab('projects',this)">Projects</button>
+  <button onclick="showTab('blog',this)">Blog</button>
+  <button onclick="showTab('cv',this)">CV</button>
+  <button onclick="showTab('contact',this)">Contact</button>
 </nav>
 
-<!-- WRITING -->
-<div class="panel active" id="tab-writing">
-
-  <div class="label">Plays</div>
-
+<!-- SCRIPTS -->
+<div class="panel active" id="tab-scripts">
+  <div class="label">Theatre Plays</div>
   <div class="entry">
     <div class="entry-meta">Full-length · 2024</div>
     <div class="entry-title">Placeholder Play Title</div>
     <div class="entry-desc">Description of the play.</div>
   </div>
-
   <div class="entry">
     <div class="entry-meta">Short play · 2023</div>
     <div class="entry-title">Placeholder Play Title</div>
     <div class="entry-desc">Description of the play.</div>
   </div>
-
   <div class="label">Screenwriting</div>
-
   <div class="entry">
     <div class="entry-meta">Short film · 2024</div>
     <div class="entry-title">Placeholder Script Title</div>
     <div class="entry-desc">Description of the script.</div>
   </div>
-
 </div>
 
 <!-- PROJECTS -->
 <div class="panel" id="tab-projects">
-
-  <div class="entry">
-    <div class="entry-meta">Zine</div>
-    <div class="entry-title">Placeholder Zine Title</div>
-    <div class="entry-desc">Description of the zine.</div>
+  <div class="proj-nav" id="proj-nav">
+    <button class="active" onclick="showProj('zine',this)">Zine</button>
+    <button onclick="showProj('memoir',this)">Memoir</button>
+    <button onclick="showProj('hatbox',this)">Sondheim's <em>Hat Box</em></button>
+    <button onclick="showProj('typewriting',this)">Typewriting</button>
+    <button onclick="showProj('wall',this)">Wall / 墙</button>
   </div>
-
-  <div class="entry">
-    <div class="entry-meta">Memoir</div>
-    <div class="entry-title">Placeholder Memoir Title</div>
-    <div class="entry-desc">Description.</div>
+  <div class="proj-panel active" id="proj-zine">
+    <div class="proj-entry">
+      <div class="proj-year">2024</div>
+      <div class="proj-title">Placeholder Zine Title One</div>
+      <div class="proj-images">
+        <div class="proj-image"></div>
+        <div class="proj-image"></div>
+      </div>
+      <div class="proj-desc">Description of this zine.</div>
+      <a href="#" class="download-link">Download PDF ↓</a>
+    </div>
+    <div class="proj-entry">
+      <div class="proj-year">2023</div>
+      <div class="proj-title">Placeholder Zine Title Two</div>
+      <div class="proj-images">
+        <div class="proj-image"></div>
+        <div class="proj-image"></div>
+      </div>
+      <div class="proj-desc">Description of this zine.</div>
+      <a href="#" class="download-link">Download PDF ↓</a>
+    </div>
   </div>
-
-  <div class="entry">
-    <div class="entry-meta">Hat Box Study</div>
-    <div class="entry-title">Hat Box Study</div>
-    <div class="entry-desc">Description.</div>
+  <div class="proj-panel" id="proj-memoir">
+    <div class="proj-big-desc">[Description of the memoir. Placeholder text to be filled in.]</div>
   </div>
-
-  <div class="entry">
-    <div class="entry-meta">Typewriting</div>
-    <div class="entry-title">Typewriting</div>
-    <div class="entry-desc">Description.</div>
+  <div class="proj-panel" id="proj-hatbox">
+    <div class="proj-big-desc">[Description of Sondheim's <em>Hat Box</em>. Placeholder text to be filled in.]</div>
+    <a href="#" class="download-link">Download PDF ↓</a>
   </div>
-
-  <div class="entry">
-    <div class="entry-meta">Installation / Text</div>
-    <div class="entry-title">Wall / 墙</div>
-    <div class="entry-desc">Description.</div>
+  <div class="proj-panel" id="proj-typewriting">
+    <div class="proj-big-desc">[Description of the Typewriting project. Placeholder text to be filled in.]</div>
+    <div class="proj-entry">
+      <div class="proj-year">2024</div>
+      <div class="proj-title">Placeholder Entry Title</div>
+      <div class="proj-image-single"></div>
+      <div class="proj-desc">Description of this entry.</div>
+    </div>
+    <div class="proj-entry">
+      <div class="proj-year">2023</div>
+      <div class="proj-title">Placeholder Entry Title</div>
+      <div class="proj-image-single"></div>
+      <div class="proj-desc">Description of this entry.</div>
+    </div>
   </div>
+  <div class="proj-panel" id="proj-wall">
+    <div class="proj-big-desc">[Description of Wall / 墙. Placeholder text to be filled in.]</div>
+    <div class="proj-entry">
+      <div class="wall-meta">Rotterdam · 2024</div>
+      <div class="proj-image-single"></div>
+      <div class="proj-desc">Description of this wall entry.</div>
+    </div>
+    <div class="proj-entry">
+      <div class="wall-meta">Amsterdam · 2023</div>
+      <div class="proj-image-single"></div>
+      <div class="proj-desc">Description of this wall entry.</div>
+    </div>
+  </div>
+</div>
 
+<!-- BLOG -->
+<div class="panel" id="tab-blog">
+  <div class="label">2025</div>
+  <div class="blog-entry">
+    <div class="blog-header">
+      <div class="blog-title">Placeholder Post Title</div>
+      <div class="blog-date">12 Mar</div>
+    </div>
+    <div class="blog-content">Content of the post.</div>
+  </div>
+  <div class="label">2024</div>
+  <div class="blog-entry">
+    <div class="blog-header">
+      <div class="blog-title">Placeholder Post Title</div>
+      <div class="blog-date">8 Nov</div>
+    </div>
+    <div class="blog-content">Content of the post.</div>
+  </div>
 </div>
 
 <!-- CV -->
 <div class="panel" id="tab-cv">
+  <iframe class="cv-preview" id="cv-frame" src="" title="CV"></iframe>
+  <a href="#" class="download-link" id="cv-download">Download CV (PDF) ↓</a>
+</div>
 
-  <div class="cv-block">
-    <div class="label">Education</div>
-    <div class="cv-row">
-      <div class="cv-year">2021–23</div>
-      <div>MA Theatre Studies <div class="cv-place">Placeholder University</div></div>
-    </div>
-    <div class="cv-row">
-      <div class="cv-year">2017–21</div>
-      <div>BA Placeholder <div class="cv-place">Placeholder University</div></div>
-    </div>
+<!-- CONTACT -->
+<div class="panel" id="tab-contact">
+  <div class="contact-block">
+    <div class="contact-label">Email</div>
+    <a href="mailto:placeholder@email.com" class="contact-link">placeholder@email.com</a>
   </div>
-
-  <div class="cv-block">
-    <div class="label">Selected Work & Residencies</div>
-    <div class="cv-row">
-      <div class="cv-year">2024</div>
-      <div>Placeholder Role <div class="cv-place">Placeholder Institution</div></div>
-    </div>
-    <div class="cv-row">
-      <div class="cv-year">2023</div>
-      <div>Placeholder Role <div class="cv-place">Placeholder Institution</div></div>
-    </div>
+  <div class="contact-block">
+    <div class="contact-label">Address</div>
+    <div class="contact-value">Rotterdam, Netherlands</div>
   </div>
-
-  <div class="cv-block">
-    <div class="label">Publications & Talks</div>
-    <div class="cv-row">
-      <div class="cv-year">2024</div>
-      <div>"Placeholder Title" <div class="cv-place">Placeholder Venue</div></div>
-    </div>
+  <div class="contact-block">
+    <div class="contact-label">Instagram</div>
+    <a href="#" class="contact-link">@placeholder</a>
   </div>
-
 </div>
 
 <script>
@@ -225,9 +226,12 @@
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
   }
-</script>
-
-<script>
+  function showProj(name, btn) {
+    document.querySelectorAll('.proj-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.proj-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('proj-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", user => {
       if (!user) {
