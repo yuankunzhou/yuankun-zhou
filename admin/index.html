@@ -1,11 +1,350 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Yuankun Zhou</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #111; background: #fafafa; }
+  .login { max-width: 400px; margin: 120px auto; padding: 0 24px; }
+  .login h1 { font-size: 16px; font-weight: normal; margin-bottom: 24px; }
+  .login input { width: 100%; border: 1px solid #ddd; padding: 8px 12px; font-size: 14px; margin-bottom: 12px; outline: none; }
+  .login input:focus { border-color: #111; }
+  .login button { background: #111; color: #fff; border: none; padding: 8px 20px; font-size: 14px; cursor: pointer; }
+  .error { color: #c00; font-size: 13px; margin-top: 8px; }
+  .app { display: none; min-height: 100vh; }
+  .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 220px; background: #fff; border-right: 1px solid #e8e8e8; overflow-y: auto; }
+  .sidebar-header { padding: 20px 16px 12px; border-bottom: 1px solid #e8e8e8; }
+  .sidebar-header h2 { font-size: 13px; font-weight: normal; color: #999; }
+  .sidebar-header p { font-size: 14px; margin-top: 2px; }
+  .sidebar nav a { display: block; padding: 8px 16px; font-size: 13px; color: #444; text-decoration: none; cursor: pointer; }
+  .sidebar nav a:hover { background: #f5f5f5; }
+  .sidebar nav a.active { background: #f0f0f0; color: #111; font-weight: 500; }
+  .sidebar nav .nav-group { padding: 12px 16px 4px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; }
+  .logout { position: absolute; bottom: 16px; left: 16px; font-size: 12px; color: #999; cursor: pointer; text-decoration: underline; }
+  .main { margin-left: 220px; padding: 40px; max-width: 900px; }
+  .main h2 { font-size: 18px; font-weight: normal; margin-bottom: 24px; }
+  .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fff; border: 1px solid #e8e8e8; margin-bottom: 8px; }
+  .list-item-title { font-size: 14px; }
+  .list-item-meta { font-size: 12px; color: #999; margin-top: 2px; }
+  .list-item-actions { display: flex; gap: 8px; }
+  .btn { background: none; border: 1px solid #ddd; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #444; }
+  .btn:hover { border-color: #111; color: #111; }
+  .btn-primary { background: #111; color: #fff; border-color: #111; }
+  .btn-primary:hover { background: #333; }
+  .btn-danger { color: #c00; border-color: #fcc; }
+  .btn-danger:hover { background: #fff0f0; border-color: #c00; }
+  .btn-new { margin-bottom: 20px; }
+  .form-panel { background: #fff; border: 1px solid #e8e8e8; padding: 24px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 6px; letter-spacing: 0.05em; }
+  .form-group input, .form-group textarea { width: 100%; border: 1px solid #ddd; padding: 8px 10px; font-size: 14px; font-family: inherit; outline: none; }
+  .form-group input:focus, .form-group textarea:focus { border-color: #111; }
+  .form-group textarea { min-height: 120px; resize: vertical; }
+  .form-actions { display: flex; gap: 8px; margin-top: 24px; }
+  .form-hint { font-size: 11px; color: #999; margin-top: 4px; }
+  .image-upload { border: 1px dashed #ddd; padding: 16px; text-align: center; cursor: pointer; }
+  .image-upload:hover { border-color: #111; }
+  .image-upload input { display: none; }
+  .image-preview { max-width: 200px; max-height: 200px; margin: 8px auto 0; display: block; }
+  .image-url { font-size: 12px; color: #666; margin-top: 4px; word-break: break-all; }
+  .status { position: fixed; bottom: 24px; right: 24px; background: #111; color: #fff; padding: 10px 16px; font-size: 13px; display: none; }
+  .status.success { background: #2a7a2a; }
+  .status.error { background: #c00; }
+  .loading { color: #999; font-size: 13px; padding: 20px 0; }
+</style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<div class="login" id="login-panel">
+  <h1>Yuankun Zhou — Admin</h1>
+  <input type="password" id="token-input" placeholder="GitHub Personal Access Token" />
+  <button onclick="doLogin()">Login</button>
+  <div class="error" id="login-error"></div>
+</div>
+
+<div class="app" id="app">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Admin</h2>
+      <p>Yuankun Zhou</p>
+    </div>
+    <nav>
+      <div class="nav-group">Settings</div>
+      <a onclick="showSection('about')">About & Profile</a>
+      <a onclick="showSection('contact')">Contact</a>
+      <a onclick="showSection('cv')">CV</a>
+      <div class="nav-group">Scripts</div>
+      <a onclick="showSection('plays')">Theatre Plays</a>
+      <a onclick="showSection('screenwriting')">Screenwriting</a>
+      <div class="nav-group">Projects</div>
+      <a onclick="showSection('zines')">Zines</a>
+      <a onclick="showSection('memoir')">Memoir</a>
+      <a onclick="showSection('hatbox')">Sondheim's Hat Box</a>
+      <a onclick="showSection('typewriting-overview')">Typewriting Overview</a>
+      <a onclick="showSection('typewriting')">Typewriting Entries</a>
+      <a onclick="showSection('wall-overview')">Wall / 墙 Overview</a>
+      <a onclick="showSection('wall')">Wall / 墙 Entries</a>
+      <div class="nav-group">Blog</div>
+      <a onclick="showSection('blog')">Blog Posts</a>
+    </nav>
+    <span class="logout" onclick="doLogout()">Log out</span>
+  </div>
+  <div class="main" id="main-content">
+    <div class="loading">Select a section from the sidebar.</div>
+  </div>
+</div>
+
+<div class="status" id="status"></div>
+
+<script>
+const REPO='yuankunzhou/yuankun-zhou';
+const BRANCH='main';
+let TOKEN='';
+
+async function doLogin(){
+  const t=document.getElementById('token-input').value.trim();
+  if(!t)return;
+  const res=await fetch('https://api.github.com/user',{headers:{Authorization:'token '+t}});
+  if(res.ok){TOKEN=t;document.getElementById('login-panel').style.display='none';document.getElementById('app').style.display='block';}
+  else document.getElementById('login-error').textContent='Invalid token. Please try again.';
+}
+document.getElementById('token-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function doLogout(){TOKEN='';document.getElementById('app').style.display='none';document.getElementById('login-panel').style.display='block';document.getElementById('token-input').value='';}
+
+async function ghGet(path){
+  const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{headers:{Authorization:'token '+TOKEN}});
+  if(!res.ok)return null;
+  return res.json();
+}
+
+async function ghSave(path,content,message){
+  const existing=await ghGet(path);
+  const body={message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
+  if(existing&&existing.sha)body.sha=existing.sha;
+  const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{method:'PUT',headers:{Authorization:'token '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  return res.ok;
+}
+
+async function ghDelete(path,message){
+  const existing=await ghGet(path);
+  if(!existing)return false;
+  const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{method:'DELETE',headers:{Authorization:'token '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({message,sha:existing.sha,branch:BRANCH})});
+  return res.ok;
+}
+
+async function ghList(folder){
+  const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`,{headers:{Authorization:'token '+TOKEN}});
+  if(!res.ok)return[];
+  const files=await res.json();
+  return Array.isArray(files)?files.filter(f=>f.name.endsWith('.md')):[];
+}
+
+async function ghReadFile(path){
+  const f=await ghGet(path);
+  if(!f)return null;
+  return decodeURIComponent(escape(atob(f.content.replace(/\n/g,''))));
+}
+
+function parseMd(text){
+  if(!text)return{_body:''};
+  const lines=text.split('\n');
+  const data={};let dashes=0,bodyStart=0;
+  for(let i=0;i<lines.length;i++){
+    if(lines[i].trim()==='---'){dashes++;if(dashes===2){bodyStart=i+1;break;}continue;}
+    if(dashes===1){const m=lines[i].match(/^([\w_]+):\s*"?(.+?)"?\s*$/);if(m)data[m[1]]=m[2];}
+  }
+  data._body=lines.slice(bodyStart).join('\n').trim();
+  return data;
+}
+
+function buildMd(fields,body){
+  let fm='---\n';
+  for(const[k,v]of Object.entries(fields)){if(v!==undefined&&v!=='')fm+=`${k}: ${v}\n`;}
+  fm+='---\n';
+  if(body)fm+='\n'+body;
+  return fm;
+}
+
+function showStatus(msg,type='success'){
+  const el=document.getElementById('status');
+  el.textContent=msg;el.className='status '+type;el.style.display='block';
+  setTimeout(()=>el.style.display='none',3000);
+}
+
+async function uploadFile(file){
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=async e=>{
+      const b64=e.target.result.split(',')[1];
+      const filename='images/'+Date.now()+'_'+file.name.replace(/\s/g,'_');
+      const existing=await ghGet(filename);
+      const body={message:'Upload file',content:b64,branch:BRANCH};
+      if(existing&&existing.sha)body.sha=existing.sha;
+      const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{method:'PUT',headers:{Authorization:'token '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(res.ok){const data=await res.json();resolve(data.content.download_url);}
+      else resolve(null);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function imageField(id,label,currentUrl){
+  return`<div class="form-group"><label>${label}</label><div class="image-upload" onclick="document.getElementById('img-input-${id}').click()"><input type="file" id="img-input-${id}" accept="image/*" onchange="previewImage('${id}',this)" />${currentUrl?`<img src="${currentUrl}" class="image-preview" id="img-preview-${id}" />`:`<div id="img-preview-${id}">Click to upload image</div>`}</div><input type="hidden" id="img-url-${id}" value="${currentUrl||''}" /><div class="image-url" id="img-label-${id}">${currentUrl||''}</div></div>`;
+}
+
+async function previewImage(id,input){
+  const file=input.files[0];if(!file)return;
+  showStatus('Uploading...','');
+  const url=await uploadFile(file);
+  if(url){
+    document.getElementById('img-url-'+id).value=url;
+    document.getElementById('img-label-'+id).textContent=url;
+    document.getElementById('img-preview-'+id).outerHTML=`<img src="${url}" class="image-preview" id="img-preview-${id}" />`;
+    showStatus('Uploaded!');
+  }else showStatus('Upload failed','error');
+}
+
+function showSection(name){
+  document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('main-content').innerHTML='<div class="loading">Loading...</div>';
+  const s={about:renderAbout,contact:renderContact,cv:renderCV,memoir:renderMemoir,hatbox:renderHatbox,'typewriting-overview':renderTypewritingOverview,'wall-overview':renderWallOverview,plays:()=>renderList('_plays','Theatre Plays'),screenwriting:()=>renderList('_screenwriting','Screenwriting'),zines:()=>renderList('_zines','Zines'),typewriting:()=>renderList('_typewriting','Typewriting Entries'),wall:()=>renderList('_wall','Wall / 墙 Entries'),blog:()=>renderList('_blog','Blog Posts')};
+  if(s[name])s[name]();
+}
+
+async function renderAbout(){
+  const d=parseMd(await ghReadFile('_data/about.md'));
+  document.getElementById('main-content').innerHTML=`<h2>About & Profile</h2><div class="form-panel"><div class="form-group"><label>Name (English)</label><input id="f-name_en" value="${d.name_en||''}" /></div><div class="form-group"><label>Name (Chinese)</label><input id="f-name_zh" value="${d.name_zh||''}" /></div><div class="form-group"><label>Roles / Tags</label><input id="f-roles" value="${d.roles||''}" /><div class="form-hint">e.g. Artist · Dramaturg · Playwright · Researcher</div></div>${imageField('profile','Profile Picture',d.profile_pic)}<div class="form-group"><label>About Description</label><textarea id="f-body">${d._body||''}</textarea></div><div class="form-actions"><button class="btn btn-primary" onclick="saveAbout()">Save</button></div></div>`;
+}
+async function saveAbout(){
+  const ok=await ghSave('_data/about.md',buildMd({name_en:document.getElementById('f-name_en').value,name_zh:document.getElementById('f-name_zh').value,roles:document.getElementById('f-roles').value,profile_pic:document.getElementById('img-url-profile').value},document.getElementById('f-body').value),'Update about');
+  showStatus(ok?'Saved!':'Error',ok?'success':'error');
+}
+
+async function renderContact(){
+  const d=parseMd(await ghReadFile('_data/contact.md'));
+  document.getElementById('main-content').innerHTML=`<h2>Contact</h2><div class="form-panel"><div class="form-group"><label>Email</label><input id="f-email" value="${d.email||''}" /></div><div class="form-group"><label>Address</label><input id="f-address" value="${d.address||''}" /></div><div class="form-group"><label>Instagram</label><input id="f-instagram" value="${d.instagram||''}" /><div class="form-hint">e.g. @yuankunzhou</div></div><div class="form-actions"><button class="btn btn-primary" onclick="saveContact()">Save</button></div></div>`;
+}
+async function saveContact(){
+  const ok=await ghSave('_data/contact.md',buildMd({email:document.getElementById('f-email').value,address:document.getElementById('f-address').value,instagram:document.getElementById('f-instagram').value},''),'Update contact');
+  showStatus(ok?'Saved!':'Error',ok?'success':'error');
+}
+
+async function renderCV(){
+  const d=parseMd(await ghReadFile('_data/cv.md'));
+  document.getElementById('main-content').innerHTML=`<h2>CV</h2><div class="form-panel"><div class="form-group"><label>CV PDF</label><div class="image-upload" onclick="document.getElementById('cv-file-input').click()"><input type="file" id="cv-file-input" accept=".pdf" onchange="uploadCV(this)" /><div id="cv-current">${d.cv_pdf?`Current: <a href="${d.cv_pdf}" target="_blank">View PDF</a>`:'Click to upload PDF'}</div></div><input type="hidden" id="cv-pdf-url" value="${d.cv_pdf||''}" /></div><div class="form-actions"><button class="btn btn-primary" onclick="saveCV()">Save</button></div></div>`;
+}
+async function uploadCV(input){
+  const file=input.files[0];if(!file)return;showStatus('Uploading...','');
+  const url=await uploadFile(file);
+  if(url){document.getElementById('cv-pdf-url').value=url;document.getElementById('cv-current').innerHTML=`Current: <a href="${url}" target="_blank">View PDF</a>`;showStatus('Uploaded!');}
+  else showStatus('Upload failed','error');
+}
+async function saveCV(){
+  const ok=await ghSave('_data/cv.md',buildMd({cv_pdf:document.getElementById('cv-pdf-url').value},''),'Update CV');
+  showStatus(ok?'Saved!':'Error',ok?'success':'error');
+}
+
+async function renderList(folder,title){
+  const files=await ghList(folder);
+  const items=[];
+  for(const f of files){const text=await ghReadFile(f.path);const d=parseMd(text);d._path=f.path;items.push(d);}
+  items.sort((a,b)=>(b.year||b.date||'').localeCompare(a.year||a.date||''));
+  document.getElementById('main-content').innerHTML=`<h2>${title}</h2><button class="btn btn-primary btn-new" onclick="showForm('${folder}','${title}',null)">+ New Entry</button>${items.map(item=>`<div class="list-item"><div><div class="list-item-title">${item.title||item.location||'Untitled'}</div><div class="list-item-meta">${item.year||item.date||''}</div></div><div class="list-item-actions"><button class="btn" onclick='editItem(${JSON.stringify(item._path)},"${folder}","${title}")'>Edit</button><button class="btn btn-danger" onclick='deleteItem(${JSON.stringify(item._path)},"${folder}","${title}")'>Delete</button></div></div>`).join('')}`;
+}
+
+async function editItem(path,folder,title){
+  const text=await ghReadFile(path);const d=parseMd(text);d._path=path;showForm(folder,title,d);
+}
+async function deleteItem(path,folder,title){
+  if(!confirm('Delete this entry?'))return;
+  const ok=await ghDelete(path,'Delete entry');
+  showStatus(ok?'Deleted!':'Error',ok?'success':'error');
+  if(ok)renderList(folder,title);
+}
+
+function showForm(folder,title,data){
+  const d=data||{};
+  const isScript=folder==='_plays'||folder==='_screenwriting';
+  const isBlog=folder==='_blog';
+  const isWall=folder==='_wall';
+  const isTypewriting=folder==='_typewriting';
+  const isZine=folder==='_zines';
+  let html=`<h2>${d._path?'Edit':'New'} — ${title}</h2><button class="btn" onclick="renderList('${folder}','${title}')" style="margin-bottom:16px;">← Back</button><div class="form-panel">`;
+  if(isWall){html+=`<div class="form-group"><label>Location</label><input id="f-location" value="${d.location||''}" /></div>`;}
+  else{html+=`<div class="form-group"><label>Title</label><input id="f-title" value="${d.title||''}" /></div>`;}
+  if(isScript)html+=`<div class="form-group"><label>Type</label><input id="f-type" value="${d.type||''}" /></div>`;
+  if(!isBlog)html+=`<div class="form-group"><label>Year</label><input id="f-year" value="${d.year||''}" /></div>`;
+  if(isScript)html+=`<div class="form-group"><label>Keywords</label><input id="f-keywords" value="${d.keywords||''}" /></div>`;
+  if(isBlog)html+=`<div class="form-group"><label>Date</label><input id="f-date" value="${d.date||''}" /><div class="form-hint">e.g. 12 Mar 2025</div></div>`;
+  if(isZine){html+=imageField('img1','Image 1',d.image1)+imageField('img2','Image 2',d.image2);}
+  else if(isTypewriting||isWall)html+=imageField('img1','Image',d.image);
+  if(isZine){html+=`<div class="form-group"><label>PDF</label><div class="image-upload" onclick="document.getElementById('pdf-input').click()"><input type="file" id="pdf-input" accept=".pdf" onchange="uploadPDF(this,'pdf-url','pdf-current')" /><div id="pdf-current">${d.pdf?`<a href="${d.pdf}" target="_blank">View PDF</a>`:'Click to upload PDF'}</div></div><input type="hidden" id="pdf-url" value="${d.pdf||''}" /></div>`;}
+  if(isBlog){html+=`<div class="form-group"><label>Content</label><textarea id="f-body" style="min-height:300px;">${d._body||''}</textarea></div>`;}
+  else{html+=`<div class="form-group"><label>Description</label><textarea id="f-desc">${d.description||''}</textarea></div>`;}
+  html+=`<div class="form-actions"><button class="btn btn-primary" onclick="saveFormEntry('${folder}','${d._path||''}','${title}')">Save</button></div></div>`;
+  document.getElementById('main-content').innerHTML=html;
+}
+
+async function uploadPDF(input,urlId,currentId){
+  const file=input.files[0];if(!file)return;showStatus('Uploading...','');
+  const url=await uploadFile(file);
+  if(url){document.getElementById(urlId).value=url;document.getElementById(currentId).innerHTML=`<a href="${url}" target="_blank">View PDF</a>`;showStatus('Uploaded!');}
+  else showStatus('Upload failed','error');
+}
+
+async function saveFormEntry(folder,existingPath,title){
+  const isWall=folder==='_wall';const isBlog=folder==='_blog';const isZine=folder==='_zines';const isTypewriting=folder==='_typewriting';const isScript=folder==='_plays'||folder==='_screenwriting';
+  const key=isWall?(document.getElementById('f-location')||{}).value:(document.getElementById('f-title')||{}).value||'entry';
+  const path=existingPath||`${folder}/${slug(key)}.md`;
+  const fm={};
+  if(isWall)fm.location=(document.getElementById('f-location')||{}).value;
+  else fm.title=(document.getElementById('f-title')||{}).value||'';
+  if(isScript){fm.type=(document.getElementById('f-type')||{}).value||'';fm.keywords=(document.getElementById('f-keywords')||{}).value||'';}
+  if(!isBlog)fm.year=(document.getElementById('f-year')||{}).value||'';
+  if(isBlog)fm.date=(document.getElementById('f-date')||{}).value||'';
+  if(isZine){fm.image1=(document.getElementById('img-url-img1')||{}).value||'';fm.image2=(document.getElementById('img-url-img2')||{}).value||'';fm.pdf=(document.getElementById('pdf-url')||{}).value||'';}
+  else if(isTypewriting||isWall)fm.image=(document.getElementById('img-url-img1')||{}).value||'';
+  const body=isBlog?(document.getElementById('f-body')||{}).value||'':(document.getElementById('f-desc')||{}).value||'';
+  if(!isBlog)fm.description=body;
+  const content=isBlog?buildMd(fm,body):buildMd(fm,'');
+  const ok=await ghSave(path,content,'Save entry');
+  showStatus(ok?'Saved!':'Error',ok?'success':'error');
+}
+
+async function renderMemoir(){
+  const d=parseMd(await ghReadFile('_data/memoir.md'));
+  document.getElementById('main-content').innerHTML=`<h2>Memoir</h2><div class="form-panel"><div class="form-group"><label>Description</label><textarea id="f-body" style="min-height:200px;">${d._body||''}</textarea></div><div class="form-actions"><button class="btn btn-primary" onclick="saveStatic('_data/memoir.md','memoir')">Save</button></div></div>`;
+}
+
+async function renderHatbox(){
+  const d=parseMd(await ghReadFile('_data/hatbox.md'));
+  document.getElementById('main-content').innerHTML=`<h2>Sondheim's Hat Box</h2><div class="form-panel"><div class="form-group"><label>Description</label><textarea id="f-body" style="min-height:200px;">${d._body||''}</textarea></div><div class="form-group"><label>PDF</label><div class="image-upload" onclick="document.getElementById('hatbox-pdf-input').click()"><input type="file" id="hatbox-pdf-input" accept=".pdf" onchange="uploadPDF(this,'hatbox-pdf-url','hatbox-pdf-current')" /><div id="hatbox-pdf-current">${d.pdf?`<a href="${d.pdf}" target="_blank">View PDF</a>`:'Click to upload PDF'}</div></div><input type="hidden" id="hatbox-pdf-url" value="${d.pdf||''}" /></div><div class="form-actions"><button class="btn btn-primary" onclick="saveHatbox()">Save</button></div></div>`;
+}
+async function saveHatbox(){
+  const ok=await ghSave('_data/hatbox.md',buildMd({pdf:document.getElementById('hatbox-pdf-url').value},document.getElementById('f-body').value),'Update hatbox');
+  showStatus(ok?'Saved!':'Error',ok?'success':'error');
+}
+
+async function renderTypewritingOverview(){
+  const d=parseMd(await ghReadFile('_data/typewriting.md'));
+  document.getElementById('main-content').innerHTML=`<h2>Typewriting — Overview</h2><div class="form-panel"><div class="form-group"><label>Description</label><textarea id="f-body" style="min-height:200px;">${d._body||''}</textarea></div><div class="form-actions"><button class="btn btn-primary" onclick="saveStatic('_data/typewriting.md','typewriting')">Save</button></div></div>`;
+}
+
+async function renderWallOverview(){
+  const d=parseMd(await ghReadFile('_data/wall.md'));
+  document.getElementById('main-content').innerHTML=`<h2>Wall / 墙 — Overview</h2><div class="form-panel"><div class="form-group"><label>Description</label><textarea id="f-body" style="min-height:200px;">${d._body||''}</textarea></div><div class="form-actions"><button class="btn btn-primary" onclick="saveStatic('_data/wall.md','wall')">Save</button></div></div>`;
+}
+
+async function saveStatic(path,label){
+  const ok=await ghSave(path,buildMd({},document.getElementById('f-body').value),'Update '+label);
+  showStatus(ok?'Saved!':'Error',ok?'success':'error');
+}
+
+function slug(str){return(str||'untitled').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now();}
+</script>
 </body>
 </html>
