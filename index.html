@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yuankun Zhou</title>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -57,7 +56,6 @@
   .blog-title { font-style: italic; font-size: 20px; color: #111; }
   .blog-date { font-family: Helvetica, Arial, sans-serif; font-size: 17px; color: #999; white-space: nowrap; margin-left: 16px; }
   .blog-content { font-size: 19px; color: #444; line-height: 1.8; }
-  .cv-preview { width: 100%; height: 500px; border: none; background: #f8f8f8; display: block; margin-bottom: 21px; }
   .contact-block { margin-bottom: 29px; }
   .contact-label { font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; margin-bottom: 11px; }
   .contact-value { font-size: 19px; color: #444; line-height: 1.8; }
@@ -138,6 +136,8 @@
 </div>
 
 <script>
+  function nl(str) { return (str||'').replace(/\n/g,'<br>'); }
+
   function parseMd(text) {
     const lines = text.split('\n');
     const data = {};
@@ -191,7 +191,7 @@
     if (d.name_zh) document.querySelector('.zh').textContent = d.name_zh;
     if (d.roles) document.querySelector('.roles').textContent = d.roles;
     if (d.profile_pic) document.getElementById('profile-img').src = d.profile_pic;
-    if (d._body) document.querySelector('.about-text').textContent = d._body;
+    if (d._body) document.querySelector('.about-text').innerHTML = nl(d._body);
   }
 
   async function loadScripts() {
@@ -202,7 +202,7 @@
         <div class="entry-meta">${p.type||''}${p.type&&p.year?' · ':''}${p.year||''}</div>
         <div class="entry-title">${p.title||''}</div>
         ${p.keywords?`<div class="entry-meta">${p.keywords}</div>`:''}
-        <div class="entry-desc">${p.description||''}</div>
+        <div class="entry-desc">${nl(p.description)}</div>
       </div>`).join('');
 
     const scripts = await fetchDir('_screenwriting');
@@ -212,7 +212,7 @@
         <div class="entry-meta">${p.type||''}${p.type&&p.year?' · ':''}${p.year||''}</div>
         <div class="entry-title">${p.title||''}</div>
         ${p.keywords?`<div class="entry-meta">${p.keywords}</div>`:''}
-        <div class="entry-desc">${p.description||''}</div>
+        <div class="entry-desc">${nl(p.description)}</div>
       </div>`).join('');
   }
 
@@ -227,26 +227,26 @@
           ${z.image1?`<img class="proj-image" src="${z.image1}" alt="" />`:'<div class="proj-image"></div>'}
           ${z.image2?`<img class="proj-image" src="${z.image2}" alt="" />`:'<div class="proj-image"></div>'}
         </div>
-        <div class="proj-desc">${z.description||''}</div>
+        <div class="proj-desc">${nl(z.description)}</div>
         ${z.pdf?`<a href="${z.pdf}" class="download-link">Download PDF ↓</a>`:''}
       </div>`).join('');
   }
 
   async function loadStaticProjects() {
     const memoir = await fetchMd('/_data/memoir.md');
-    if (memoir&&memoir._body) document.getElementById('memoir-text').textContent = memoir._body;
+    if (memoir&&memoir._body) document.getElementById('memoir-text').innerHTML = nl(memoir._body);
 
     const hatbox = await fetchMd('/_data/hatbox.md');
     if (hatbox) {
-      if (hatbox._body) document.getElementById('hatbox-text').textContent = hatbox._body;
+      if (hatbox._body) document.getElementById('hatbox-text').innerHTML = nl(hatbox._body);
       if (hatbox.pdf) { const el = document.getElementById('hatbox-pdf'); el.href = hatbox.pdf; el.style.display = 'inline'; }
     }
 
     const typewriting = await fetchMd('/_data/typewriting.md');
-    if (typewriting&&typewriting._body) document.getElementById('typewriting-text').textContent = typewriting._body;
+    if (typewriting&&typewriting._body) document.getElementById('typewriting-text').innerHTML = nl(typewriting._body);
 
     const wall = await fetchMd('/_data/wall.md');
-    if (wall&&wall._body) document.getElementById('wall-text').textContent = wall._body;
+    if (wall&&wall._body) document.getElementById('wall-text').innerHTML = nl(wall._body);
   }
 
   async function loadTypewriting() {
@@ -257,7 +257,7 @@
         <div class="proj-year">${e.year||''}</div>
         <div class="proj-title">${e.title||''}</div>
         ${e.image?`<img class="proj-image-single" src="${e.image}" alt="" />`:'<div class="proj-image-single"></div>'}
-        <div class="proj-desc">${e.description||''}</div>
+        <div class="proj-desc">${nl(e.description)}</div>
       </div>`).join('');
   }
 
@@ -270,7 +270,7 @@
       <div class="proj-entry">
         <div class="wall-meta">${e.location||''}${e.location&&e.year?' · ':''}${e.year||''}</div>
         ${images.map(src=>`<img style="width:100%;height:auto;display:block;margin-bottom:8px;" src="${src}" alt="" />`).join('')}
-        <div class="proj-desc">${e.description||''}</div>
+        <div class="proj-desc">${nl(e.description)}</div>
       </div>`;
     }).join('');
   }
@@ -293,7 +293,7 @@
             <div class="blog-title">${p.title||''}</div>
             <div class="blog-date">${(p.date||'').split(' ').slice(0,2).join(' ')}</div>
           </div>
-          <div class="blog-content">${p._body||''}</div>
+          <div class="blog-content">${nl(p._body)}</div>
         </div>`).join('')}`).join('');
   }
 
@@ -328,13 +328,6 @@
     document.querySelectorAll('.proj-nav button').forEach(b => b.classList.remove('active'));
     document.getElementById('proj-' + name).classList.add('active');
     btn.classList.add('active');
-  }
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
-      }
-    });
   }
 </script>
 </body>
