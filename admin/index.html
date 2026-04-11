@@ -281,7 +281,8 @@ function showForm(folder,title,data){
   if(isScript)html+=`<div class="form-group"><label>Keywords</label><input id="f-keywords" value="${d.keywords||''}" /></div>`;
   if(isBlog)html+=`<div class="form-group"><label>Date</label><input id="f-date" value="${d.date||''}" /><div class="form-hint">e.g. 12 Mar 2025</div></div>`;
   if(isZine){html+=imageField('img1','Image 1',d.image1)+imageField('img2','Image 2',d.image2);}
-  else if(isTypewriting||isWall)html+=imageField('img1','Image',d.image);
+  else if(isTypewriting)html+=imageField('img1','Image',d.image);
+  else if(isWall){html+=imageField('img1','Image 1',d.image1)+imageField('img2','Image 2',d.image2)+imageField('img3','Image 3',d.image3)+imageField('img4','Image 4',d.image4)+imageField('img5','Image 5',d.image5);}
   if(isZine){html+=`<div class="form-group"><label>PDF</label><div class="image-upload" onclick="document.getElementById('pdf-input').click()"><input type="file" id="pdf-input" accept=".pdf" onchange="uploadPDF(this,'pdf-url','pdf-current')" /><div id="pdf-current">${d.pdf?`<a href="${d.pdf}" target="_blank">View PDF</a>`:'Click to upload PDF'}</div></div><input type="hidden" id="pdf-url" value="${d.pdf||''}" /></div>`;}
   if(isBlog){html+=`<div class="form-group"><label>Content</label><textarea id="f-body" style="min-height:300px;">${d._body||''}</textarea></div>`;}
   else{html+=`<div class="form-group"><label>Description</label><textarea id="f-desc">${d.description||''}</textarea></div>`;}
@@ -307,7 +308,8 @@ async function saveFormEntry(folder,existingPath,title){
   if(!isBlog)fm.year=(document.getElementById('f-year')||{}).value||'';
   if(isBlog)fm.date=(document.getElementById('f-date')||{}).value||'';
   if(isZine){fm.image1=(document.getElementById('img-url-img1')||{}).value||'';fm.image2=(document.getElementById('img-url-img2')||{}).value||'';fm.pdf=(document.getElementById('pdf-url')||{}).value||'';}
-  else if(isTypewriting||isWall)fm.image=(document.getElementById('img-url-img1')||{}).value||'';
+  else if(isTypewriting)fm.image=(document.getElementById('img-url-img1')||{}).value||'';
+  else if(isWall){fm.image1=(document.getElementById('img-url-img1')||{}).value||'';fm.image2=(document.getElementById('img-url-img2')||{}).value||'';fm.image3=(document.getElementById('img-url-img3')||{}).value||'';fm.image4=(document.getElementById('img-url-img4')||{}).value||'';fm.image5=(document.getElementById('img-url-img5')||{}).value||'';}
   const body=isBlog?(document.getElementById('f-body')||{}).value||'':(document.getElementById('f-desc')||{}).value||'';
   if(!isBlog)fm.description=body;
   const content=isBlog?buildMd(fm,body):buildMd(fm,'');
