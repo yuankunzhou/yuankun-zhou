@@ -119,7 +119,6 @@
 </div>
 
 <div class="panel" id="tab-cv">
-  <div id="cv-preview-area"></div>
   <a href="#" class="download-link" id="cv-download" style="display:none;">Download CV (PDF) ↓</a>
 </div>
 
@@ -301,8 +300,6 @@
   async function loadCV() {
     const d = await fetchMd('/_data/cv.md');
     if (d&&d.cv_pdf) {
-      const area = document.getElementById('cv-preview-area');
-      area.innerHTML = `<object data="${d.cv_pdf}" type="application/pdf" style="width:100%;height:600px;display:block;margin-bottom:21px;"><p style="font-size:15px;color:#444;">PDF preview not available in this browser. <a href="${d.cv_pdf}" style="color:#111;">Open PDF</a></p></object>`;
       const dl = document.getElementById('cv-download');
       dl.href = d.cv_pdf;
       dl.style.display = 'inline';
