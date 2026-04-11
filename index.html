@@ -265,12 +265,15 @@
   async function loadWall() {
     const entries = await fetchDir('_wall');
     entries.sort((a,b) => (b.year||'').localeCompare(a.year||''));
-    document.getElementById('wall-list').innerHTML = entries.map(e => `
+    document.getElementById('wall-list').innerHTML = entries.map(e => {
+      const images = [e.image1,e.image2,e.image3,e.image4,e.image5].filter(Boolean);
+      return `
       <div class="proj-entry">
         <div class="wall-meta">${e.location||''}${e.location&&e.year?' · ':''}${e.year||''}</div>
-        ${e.image?`<img class="proj-image-single" src="${e.image}" alt="" />`:'<div class="proj-image-single"></div>'}
+        ${images.map(src=>`<img style="width:100%;height:auto;display:block;margin-bottom:8px;" src="${src}" alt="" />`).join('')}
         <div class="proj-desc">${e.description||''}</div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
 
   async function loadBlog() {
